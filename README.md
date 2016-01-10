@@ -6,19 +6,32 @@ CommonMark compatible Markdown parser
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+Add marked to your list of dependencies in `mix.exs`:
 
-  1. Add marked to your list of dependencies in `mix.exs`:
+``` elixir
+def deps do
+  [{:marked, "~> 0.0.1"}]
+end
+```
 
-        def deps do
-          [{:marked, "~> 0.0.1"}]
-        end
+## Usage
 
-  2. Ensure marked is started before your application:
+``` elixir
+markdown = """
+## Try CommonMark
 
-        def application do
-          [applications: [:marked]]
-        end
+You can try CommonMark here.  This dingus is powered by
+[commonmark.js](https://github.com/jgm/commonmark.js), the
+JavaScript reference implementation.
+
+1. item one
+2. item two
+    - sublist
+    - sublist
+"""
+
+Marked.to_html(markdown)
+```
 
 ## Licence
 
