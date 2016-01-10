@@ -2,7 +2,7 @@
 
 [![Build Status](https://semaphoreci.com/api/v1/projects/23666953-4757-4fcc-9188-2812cc8a5d8a/655721/badge.svg)](https://semaphoreci.com/shiroyasha/marked)
 
-CommonMark compatible Markdown parser
+[CommonMark](http://commonmark.org/) compatible Markdown parser for Elixir.
 
 ## Installation
 
