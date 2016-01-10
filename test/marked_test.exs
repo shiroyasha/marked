@@ -7,15 +7,18 @@ defmodule MarkedTest do
   @common_mark_tests_path
   |> File.read!
   |> Poison.decode!
+  #|> Enum.filter(fn(test_case) -> test_case["section"] == "Paragraphs" end)
   |> Enum.map fn(test_case) ->
 
-    test_title = "#{test_case["section"]} -- example #{test_case["example"]}"
+    section = test_case["section"]
+    example = test_case["example"]
+    markdown = test_case["markdown"]
+    html = test_case["html"]
+
+    test_title = "#{section} ##{example}"
 
     test test_title do
-      markdown = unquote(test_case["markdown"])
-      html = unquote(test_case["html"])
-
-      assert Marked.to_html(markdown) == html
+      assert Marked.to_html(unquote(markdown)) == unquote(html)
     end
 
   end
