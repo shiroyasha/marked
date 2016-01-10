@@ -24,6 +24,6 @@ defmodule Marked.Mixfile do
   end
 
   defp deps do
-    []
+    [{:poison, "~> 1.5"}]
   end
 end
