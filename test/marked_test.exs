@@ -8,6 +8,8 @@ defmodule MarkedTest do
   |> File.read!
   |> Poison.decode!
   #|> Enum.filter(fn(test_case) -> test_case["section"] == "Paragraphs" end)
+  #|> Enum.filter(fn(test_case) -> test_case["section"] == "Thematic breaks" end)
+  #|> Enum.filter(fn(test_case) -> test_case["section"] == "Tabs" end)
   |> Enum.map fn(test_case) ->
 
     section = test_case["section"]

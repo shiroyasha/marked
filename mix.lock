@@ -1,1 +1,2 @@
-%{"poison": {:hex, :poison, "1.5.0"}}
+%{"colorize": {:hex, :colorize, "0.2.0"},
+  "poison": {:hex, :poison, "1.5.0"}}
