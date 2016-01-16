@@ -28,6 +28,16 @@ defmodule Marked do
     paragraph <> parse(new_rest)
   end
 
+  defp parse(tokens = [%{type: :list_item, content: content} | rest]) do
+    list_items = tokens
+                  |> Enum.take_while(fn(token) -> token.type == :list_item end)
+                  |> Enum.map(fn(token) -> String.replace(token.content, "- ", "") end)
+
+    new_rest = tokens |> Enum.drop_while(fn(token) -> token.type == :list_item end)
+
+    render_list(list_items) <> parse(new_rest)
+  end
+
   defp parse(tokens = [%{type: :empty, content: content} | rest]) do
     parse(rest)
   end
@@ -48,6 +58,8 @@ defmodule Marked do
 
   defp line_type(line) do
     cond do
+      list_item?(line) ->
+        :list_item
       thematic_break?(line) ->
         :thematic_break
       empty?(line) ->
@@ -67,10 +79,24 @@ defmodule Marked do
     Regex.match?(~r/^$/, line)
   end
 
+  defp list_item?(line) do
+    Regex.match?(~r/^- .*$/, line)
+  end
+
   # rendering
 
   defp render_paragraph(content) do
     "<p>#{strip_lines(content)}</p>\n"
+  end
+
+  defp render_list(list_items) do
+    rendered_list_items = Enum.map(list_items, &render_list_item(&1))
+
+    "<ul>\n#{rendered_list_items}</ul>\n"
+  end
+
+  defp render_list_item(content) do
+    "<li>#{content}</li>\n"
   end
 
   defp render_thematic_break(content) do
