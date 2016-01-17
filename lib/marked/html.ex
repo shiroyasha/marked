@@ -1,5 +1,9 @@
 defmodule Marked.Html do
 
+  def header(content, level) do
+    "<h#{level}>#{String.strip(content)}</h#{level}>\n"
+  end
+
   def ul(list_items) do
     rendered_list_items = Enum.map(list_items, &li(&1))
 
