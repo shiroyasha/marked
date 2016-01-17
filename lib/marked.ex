@@ -71,7 +71,9 @@ defmodule Marked do
                 |> List.first
                 |> String.length
 
-        content = line |> String.strip |> String.strip(?#)
+        content = line
+                  |> String.replace(~r/^\s*\#*/, "")
+                  |> String.replace(~r/\s+\#*\s*$/, "")
 
         %{type: :atx_heading, level: level, content: content}
 
