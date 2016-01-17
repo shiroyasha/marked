@@ -66,12 +66,14 @@ defmodule Marked do
         %{type: :thematic_break, content: ""}
 
       atx_heading?(line) ->
-        level = Regex.scan(~r/^(\#*)/, line, capture: :first)
+        level = Regex.scan(~r/^(\#*)/, String.strip(line), capture: :first)
                 |> List.first
                 |> List.first
                 |> String.length
 
-        %{type: :atx_heading, level: level, content: String.strip(line, ?#)}
+        content = line |> String.strip |> String.strip(?#)
+
+        %{type: :atx_heading, level: level, content: content}
 
       list_item?(line) ->
         %{type: :list_item, content: line}
@@ -99,7 +101,7 @@ defmodule Marked do
   end
 
   defp atx_heading?(line) do
-    Regex.match?(~r/^\#{1,6}\s+.+(\#*)$/, line)
+    Regex.match?(~r/^\s{0,1}\#{1,6}\s+.+(\#*)$/, line)
   end
 
 end
