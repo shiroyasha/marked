@@ -12,7 +12,7 @@ defmodule Marked do
   end
 
   defp parse(tokens = [%{type: :thematic_break, content: content} | rest]) do
-    render_thematic_break(content) <> parse(rest)
+    Marked.Html.hr(content) <> parse(rest)
   end
 
   defp parse(tokens = [%{type: :simple, content: content} | rest]) do
@@ -20,7 +20,7 @@ defmodule Marked do
                 |> Enum.take_while(fn(token) -> token.type == :simple end)
                 |> Enum.map(fn(token) -> token.content end)
                 |> Enum.join("\n")
-                |> render_paragraph
+                |> Marked.Html.paragraph
 
     new_rest = tokens
                |> Enum.drop_while(fn(token) -> token.type == :simple end)
@@ -35,7 +35,7 @@ defmodule Marked do
 
     new_rest = tokens |> Enum.drop_while(fn(token) -> token.type == :list_item end)
 
-    render_list(list_items) <> parse(new_rest)
+    Marked.Html.ul(list_items) <> parse(new_rest)
   end
 
   defp parse(tokens = [%{type: :empty, content: content} | rest]) do
@@ -53,19 +53,22 @@ defmodule Marked do
   end
 
   defp tokenize([line | rest], result) do
-    tokenize(rest, result ++ [%{type: line_type(line), content: line}])
+    tokenize(rest, result ++ [line_type(line)])
   end
 
   defp line_type(line) do
     cond do
-      list_item?(line) ->
-        :list_item
       thematic_break?(line) ->
-        :thematic_break
+        %{type: :thematic_break, content: ""}
+
+      list_item?(line) ->
+        %{type: :list_item, content: line}
+
       empty?(line) ->
-        :empty
+        %{type: :empty, content: ""}
+
       true ->
-        :simple
+        %{type: :simple, content: line}
     end
   end
 
@@ -81,35 +84,6 @@ defmodule Marked do
 
   defp list_item?(line) do
     Regex.match?(~r/^- .*$/, line)
-  end
-
-  # rendering
-
-  defp render_paragraph(content) do
-    "<p>#{strip_lines(content)}</p>\n"
-  end
-
-  defp render_list(list_items) do
-    rendered_list_items = Enum.map(list_items, &render_list_item(&1))
-
-    "<ul>\n#{rendered_list_items}</ul>\n"
-  end
-
-  defp render_list_item(content) do
-    "<li>#{content}</li>\n"
-  end
-
-  defp render_thematic_break(content) do
-    "<hr />\n"
-  end
-
-  # helpers
-
-  defp strip_lines(content) do
-    content
-    |> String.split("\n", trim: true)
-    |> Enum.map(&String.strip(&1))
-    |> Enum.join("\n")
   end
 
 end

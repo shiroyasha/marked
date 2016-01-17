@@ -10,13 +10,13 @@ defmodule MarkedTest do
     end
   end
 
-  CommonMark.create_tests "Lists", fn(title, markdown, html) ->
+  CommonMark.create_tests "Thematic breaks", fn(title, markdown, html) ->
     test title do
       assert Marked.to_html(unquote(markdown)) == unquote(html)
     end
   end
 
-  CommonMark.create_tests "Tabs", fn(title, markdown, html) ->
+  CommonMark.create_tests "Lists", fn(title, markdown, html) ->
     test title do
       assert Marked.to_html(unquote(markdown)) == unquote(html)
     end
