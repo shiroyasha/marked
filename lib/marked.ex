@@ -99,7 +99,7 @@ defmodule Marked do
   end
 
   defp atx_heading?(line) do
-    Regex.match?(~r/^\#{1,6}.+(\#*)$/, line)
+    Regex.match?(~r/^\#{1,6}\s+.+(\#*)$/, line)
   end
 
 end
