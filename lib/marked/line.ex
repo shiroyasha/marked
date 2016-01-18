@@ -1,30 +1,21 @@
 defmodule Marked.Line do
 
+  def parse(line) do
+    Marked.LineParser.parse(type(line), line)
+  end
+
   def type(line) do
     cond do
       thematic_break?(line) ->
-        %{type: :thematic_break, content: ""}
-
+        :thematic_break
       atx_heading?(line) ->
-        level = Regex.scan(~r/^(\#*)/, String.strip(line), capture: :first)
-                |> List.first
-                |> List.first
-                |> String.length
-
-        content = line
-                  |> String.replace(~r/^\s*\#*/, "")
-                  |> String.replace(~r/\s+\#*\s*$/, "")
-
-        %{type: :atx_heading, level: level, content: content}
-
+        :atx_heading
       list_item?(line) ->
-        %{type: :list_item, content: line}
-
+        :list_item
       empty?(line) ->
-        %{type: :empty, content: ""}
-
+        :empty
       true ->
-        %{type: :simple, content: line}
+        :simple
     end
   end
 

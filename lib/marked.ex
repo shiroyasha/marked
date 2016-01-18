@@ -57,7 +57,7 @@ defmodule Marked do
   end
 
   defp tokenize([line | rest], result) do
-    tokenize(rest, result ++ [Marked.Line.type(line)])
+    tokenize(rest, result ++ [Marked.Line.parse(line)])
   end
 
 end
