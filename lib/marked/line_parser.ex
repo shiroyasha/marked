@@ -31,8 +31,16 @@ defmodule Marked.LineParser do
     %{type: :simple, content: line}
   end
 
-  def parse(:code_guard, _) do
-    %{type: :code_guard, content: ""}
+  def parse(:code_guard, line) do
+    fence = Regex.scan(~r/^\s*(`*|~*)/, line, capture: :first)
+            |> List.first
+            |> List.first
+
+    fence_type = String.at(fence, 0)
+
+    stregth = fence |> String.length
+
+    %{type: :code_guard, stregth: stregth, fence_type: fence_type, content: ""}
   end
 
 end

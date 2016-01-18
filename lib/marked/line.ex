@@ -44,8 +44,8 @@ defmodule Marked.Line do
   end
 
   def code_guard?(line) do
-    Regex.match?(~r/^\s*```/, line) ||
-    Regex.match?(~r/^\s*~~~~/, line)
+    Regex.match?(~r/^\s*`{3,}/, line) ||
+    Regex.match?(~r/^\s*~{3,}/, line)
   end
 
 end
