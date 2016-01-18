@@ -27,7 +27,7 @@ defmodule Marked.Html do
   end
 
   def code(content) do
-    "<pre><code>#{content}\n</code></pre>\n"
+    "<pre><code>#{html_escape(content)}\n</code></pre>\n"
   end
 
   defp strip_lines(content) do
@@ -35,6 +35,12 @@ defmodule Marked.Html do
     |> String.split("\n", trim: true)
     |> Enum.map(&String.strip(&1))
     |> Enum.join("\n")
+  end
+
+  defp html_escape(content) do
+    content
+    |> String.replace("<", "&lt;")
+    |> String.replace(">", "&gt;")
   end
 
 end
