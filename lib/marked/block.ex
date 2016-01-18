@@ -29,7 +29,8 @@ defmodule Marked.Block do
       !Marked.Line.type?(line, :code_guard)
     end
 
-    (code |> join_content |> Marked.Html.code) <> parse(tl(non_code))
+    (code |> join_content |> Marked.Html.code) <>
+    (length(non_code) > 0 && parse(tl(non_code)) || "")
   end
 
   def parse(_) do
