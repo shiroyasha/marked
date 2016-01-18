@@ -55,13 +55,25 @@ defmodule BlockTest do
 
     it "collects everything between code blocks" do
       lines = [
-        %{type: :code_guard, content: ""},
+        %{type: :code_guard, fence_type: ?`, strength: 3, content: "```"},
         %{type: :simple, content: "def test:"},
         %{type: :simple, content: "  1+2"},
-        %{type: :code_guard, content: ""}
+        %{type: :code_guard, fence_type: ?`, strength: 3, content: "```"},
       ]
 
       assert Marked.Block.parse(lines) == "<pre><code>def test:\n  1+2\n</code></pre>\n"
+    end
+
+    it "stops only at the same fence type" do
+      lines = [
+        %{type: :code_guard, fence_type: ?`, strength: 3, content: "```"},
+        %{type: :simple, content: "def test:"},
+        %{type: :code_guard, fence_type: ?~, strength: 3, content: "~~~"},
+        %{type: :simple, content: "  1+2"},
+        %{type: :code_guard, fence_type: ?`, strength: 3, content: "```"}
+      ]
+
+      assert Marked.Block.parse(lines) == "<pre><code>def test:\n~~~\n  1+2\n</code></pre>\n"
     end
 
   end

@@ -38,9 +38,9 @@ defmodule Marked.LineParser do
 
     fence_type = String.at(fence, 0)
 
-    stregth = fence |> String.length
+    strength = fence |> String.length
 
-    %{type: :code_guard, stregth: stregth, fence_type: fence_type, content: ""}
+    %{type: :code_guard, strength: strength, fence_type: fence_type, content: line}
   end
 
 end
