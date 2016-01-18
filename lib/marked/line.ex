@@ -14,6 +14,8 @@ defmodule Marked.Line do
         :list_item
       empty?(line) ->
         :empty
+      code_guard?(line) ->
+        :code_guard
       true ->
         :simple
     end
@@ -35,6 +37,10 @@ defmodule Marked.Line do
 
   def atx_heading?(line) do
     Regex.match?(~r/^\s{0,3}\#{1,6}(\s+.*)?(\#*)$/, line)
+  end
+
+  def code_guard?(line) do
+    Regex.match?(~r/^```$/, line)
   end
 
 end

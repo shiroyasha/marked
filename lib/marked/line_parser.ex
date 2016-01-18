@@ -29,4 +29,8 @@ defmodule Marked.LineParser do
     %{type: :simple, content: line}
   end
 
+  def parse(:code_guard, _) do
+    %{type: :code_guard, content: ""}
+  end
+
 end

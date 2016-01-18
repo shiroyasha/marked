@@ -24,6 +24,10 @@ defmodule Marked.Mixfile do
   end
 
   defp deps do
-    [{:poison, "~> 1.5"}, {:colorize, "~> 0.2.0"}]
+    [
+      {:poison, "~> 1.5"},
+      {:colorize, "~> 0.2.0"},
+      {:ex_spec, "~> 1.0.0"}
+    ]
   end
 end
