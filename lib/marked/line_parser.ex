@@ -24,7 +24,7 @@ defmodule Marked.LineParser do
   end
 
   def parse(:empty, _) do
-    %{type: :empty}
+    %{type: :empty, content: ""}
   end
 
   def parse(:simple, line) do

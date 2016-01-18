@@ -22,6 +22,14 @@ defmodule Marked.Html do
     "<hr />\n"
   end
 
+  def code("") do
+    "<pre><code></code></pre>\n"
+  end
+
+  def code(content) do
+    "<pre><code>#{content}\n</code></pre>\n"
+  end
+
   defp strip_lines(content) do
     content
     |> String.split("\n", trim: true)

@@ -51,4 +51,19 @@ defmodule BlockTest do
 
   end
 
+  describe "guarded code blocks" do
+
+    it "collects everything between code blocks" do
+      lines = [
+        %{type: :code_guard, content: ""},
+        %{type: :simple, content: "def test:"},
+        %{type: :simple, content: "  1+2"},
+        %{type: :code_guard, content: ""}
+      ]
+
+      assert Marked.Block.parse(lines) == "<pre><code>def test:\n  1+2\n</code></pre>\n"
+    end
+
+  end
+
 end

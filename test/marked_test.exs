@@ -28,6 +28,12 @@ defmodule MarkedTest do
     end
   end
 
+  CommonMark.create_tests "Fenced code blocks", fn(title, markdown, html) ->
+    test title do
+      assert Marked.to_html(unquote(markdown)) == unquote(html)
+    end
+  end
+
   CommonMark.create_tests "All", fn(title, markdown, html) ->
     test title do
       assert Marked.to_html(unquote(markdown)) == unquote(html)

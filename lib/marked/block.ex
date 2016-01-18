@@ -16,12 +16,20 @@ defmodule Marked.Block do
     (list_items |> content |> Marked.Html.ul) <> parse(rest)
   end
 
-  def parse(lines = [%{type: :empty} | rest]) do
+  def parse(lines = [%{type: :empty, content: ""} | rest]) do
     parse(rest)
   end
 
   def parse([%{type: :atx_heading, level: level, content: content} | rest]) do
     Marked.Html.header(content, level) <> parse(rest)
+  end
+
+  def parse(lines = [%{type: :code_guard, content: ""} | rest]) do
+    {code, non_code} = rest |> Enum.split_while fn(line) ->
+      !Marked.Line.type?(line, :code_guard)
+    end
+
+    (code |> join_content |> Marked.Html.code) <> parse(tl(non_code))
   end
 
   def parse(_) do
