@@ -4,27 +4,16 @@ defmodule Marked.Block do
     Marked.Html.hr(content) <> parse(rest)
   end
 
-  def parse(lines = [%{type: :simple, content: content} | rest]) do
-    paragraph = lines
-                |> Enum.take_while(fn(token) -> token.type == :simple end)
-                |> Enum.map(fn(token) -> token.content end)
-                |> Enum.join("\n")
-                |> Marked.Html.paragraph
+  def parse(lines = [%{type: :simple, content: _} | _]) do
+    {simple_lines, rest} = lines |> take_all(:simple)
 
-    new_rest = lines
-               |> Enum.drop_while(fn(token) -> token.type == :simple end)
-
-    paragraph <> parse(new_rest)
+    (simple_lines |> join_content |> Marked.Html.paragraph) <> parse(rest)
   end
 
   def parse(lines = [%{type: :list_item, content: content} | rest]) do
-    list_items = lines
-                  |> Enum.take_while(fn(token) -> token.type == :list_item end)
-                  |> Enum.map(fn(token) -> String.replace(token.content, "- ", "") end)
+    {list_items, rest} = lines |> take_all(:list_item)
 
-    new_rest = lines |> Enum.drop_while(fn(token) -> token.type == :list_item end)
-
-    Marked.Html.ul(list_items) <> parse(new_rest)
+    (list_items |> content |> Marked.Html.ul) <> parse(rest)
   end
 
   def parse(lines = [%{type: :empty} | rest]) do
@@ -37,6 +26,18 @@ defmodule Marked.Block do
 
   def parse(_) do
     ""
+  end
+
+  def join_content(lines) do
+    lines |> content |> Enum.join("\n")
+  end
+
+  def content(lines) do
+    lines |> Enum.map(fn(line) -> line.content end)
+  end
+
+  def take_all(lines, line_type) do
+    lines |> Enum.split_while(&Marked.Line.type?(&1, line_type))
   end
 
 end

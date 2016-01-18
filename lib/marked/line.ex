@@ -4,6 +4,10 @@ defmodule Marked.Line do
     Marked.LineParser.parse(type(line), line)
   end
 
+  def type?(line, line_type) do
+    line.type == line_type
+  end
+
   def type(line) do
     cond do
       thematic_break?(line) ->

@@ -18,7 +18,9 @@ defmodule Marked.LineParser do
   end
 
   def parse(:list_item, line) do
-    %{type: :list_item, content: line}
+    content = String.replace(line, "- ", "")
+
+    %{type: :list_item, content: content}
   end
 
   def parse(:empty, _) do
