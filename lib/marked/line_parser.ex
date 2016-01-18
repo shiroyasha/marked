@@ -5,10 +5,7 @@ defmodule Marked.LineParser do
   end
 
   def parse(:atx_heading, line) do
-    level = Regex.scan(~r/^(\#*)/, String.strip(line), capture: :first)
-            |> List.first
-            |> List.first
-            |> String.length
+    level = line |> first_match(~r/^(\#*)/) |> String.length
 
     content = line
               |> String.replace(~r/^\s*\#*/, "")
@@ -32,15 +29,16 @@ defmodule Marked.LineParser do
   end
 
   def parse(:code_guard, line) do
-    fence = Regex.scan(~r/^\s*(`*|~*)/, line, capture: :first)
-            |> List.first
-            |> List.first
+    fence = line |> first_match(~r/^\s*(`*|~*)/)
 
-    fence_type = String.at(fence, 0)
+    %{type: :code_guard,
+      strength: fence |> String.length,
+      fence_type: String.at(fence, 0),
+      content: line}
+  end
 
-    strength = fence |> String.length
-
-    %{type: :code_guard, strength: strength, fence_type: fence_type, content: line}
+  defp first_match(line, regex) do
+    Regex.scan(regex, line, capture: :first) |> List.first |> List.first
   end
 
 end
