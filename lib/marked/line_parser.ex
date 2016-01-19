@@ -29,7 +29,7 @@ defmodule Marked.LineParser do
   end
 
   def parse(:code_guard, line) do
-    fence = line |> first_match(~r/^\s*(`*|~*)/)
+    fence = line |> first_match(~r/^\s*(`+|~+)/)
 
     %{type: :code_guard,
       strength: fence |> String.length,
