@@ -24,7 +24,11 @@ defmodule Marked.Block do
     Marked.Html.header(content, level) <> parse(rest)
   end
 
-  def parse(lines = [%{type: :code_guard, strength: strength, fence_type: fence_type} | rest]) do
+  def parse(lines = [%{type: :code_guard} | rest]) do
+    fence_type = hd(lines).fence_type
+    strength = hd(lines).strength
+    language = hd(lines).language
+
     {code, non_code} = rest |> Enum.split_while fn(line) ->
       result = line.type == :code_guard &&
                line.strength >= strength &&
@@ -33,8 +37,9 @@ defmodule Marked.Block do
       !result
     end
 
-    (code |> join_content |> Marked.Html.code) <>
-    (length(non_code) > 0 && parse(tl(non_code)) || "")
+    code_segment = code |> join_content |> Marked.Html.code(language)
+
+    code_segment <> parse(length(non_code) > 0 && tl(non_code) || "")
   end
 
   def parse(_) do

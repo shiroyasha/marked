@@ -24,6 +24,22 @@ defmodule LineParserTest do
         assert Marked.LineParser.parse(:code_guard, line).fence_type == "~"
       end
     end
+
+    context "when code fence has a set language" do
+      it "saves the language" do
+        line = "``` ruby"
+
+        assert Marked.LineParser.parse(:code_guard, line).language == "ruby"
+      end
+    end
+
+    context "when code fence has no set language" do
+      it "saves the language" do
+        line = "```"
+
+        assert Marked.LineParser.parse(:code_guard, line).language == nil
+      end
+    end
   end
 
 end

@@ -30,10 +30,12 @@ defmodule Marked.LineParser do
 
   def parse(:code_guard, line) do
     fence = line |> first_match(~r/^\s*(`+|~+)/)
+    language = line |> String.replace(~r/(`|~)/, "") |> String.split |> List.first
 
     %{type: :code_guard,
       strength: fence |> String.length,
       fence_type: String.at(fence, 0),
+      language: language,
       content: line}
   end
 

@@ -22,12 +22,16 @@ defmodule Marked.Html do
     "<hr />\n"
   end
 
-  def code("") do
+  def code("", nil) do
     "<pre><code></code></pre>\n"
   end
 
-  def code(content) do
+  def code(content, nil) do
     "<pre><code>#{html_escape(content)}\n</code></pre>\n"
+  end
+
+  def code(content, language) do
+    "<pre><code class=\"language-#{language}\">#{html_escape(content)}\n</code></pre>\n"
   end
 
   defp strip_lines(content) do
