@@ -16,8 +16,8 @@ defmodule Marked.Line do
         :atx_heading
       list_item?(line) ->
         :list_item
-      empty?(line) ->
-        :empty
+      blank?(line) ->
+        :blank
       code_guard?(line) ->
         :code_guard
       true ->
@@ -31,7 +31,7 @@ defmodule Marked.Line do
     Regex.match?(~r/^(\s*\*){3,}$/, line)
   end
 
-  def empty?(line) do
+  def blank?(line) do
     Regex.match?(~r/^\s*$/, line)
   end
 

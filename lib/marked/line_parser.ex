@@ -20,8 +20,8 @@ defmodule Marked.LineParser do
     %{type: :list_item, content: content}
   end
 
-  def parse(:empty, _) do
-    %{type: :empty, content: ""}
+  def parse(:blank, _) do
+    %{type: :blank, content: ""}
   end
 
   def parse(:simple, line) do

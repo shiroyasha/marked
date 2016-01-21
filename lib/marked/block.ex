@@ -16,7 +16,7 @@ defmodule Marked.Block do
     (list_items |> content |> Marked.Html.ul) <> parse(rest)
   end
 
-  def parse(lines = [%{type: :empty, content: ""} | rest]) do
+  def parse(lines = [%{type: :blank, content: ""} | rest]) do
     parse(rest)
   end
 
