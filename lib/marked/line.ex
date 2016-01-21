@@ -32,7 +32,7 @@ defmodule Marked.Line do
   end
 
   def empty?(line) do
-    Regex.match?(~r/^$/, line)
+    Regex.match?(~r/^\s*$/, line)
   end
 
   def list_item?(line) do
