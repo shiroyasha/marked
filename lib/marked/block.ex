@@ -24,6 +24,12 @@ defmodule Marked.Block do
     Marked.Html.header(content, level) <> parse(rest)
   end
 
+  def parse(lines = [%{type: :code, content: _} | _]) do
+    {code_lines, rest} = lines |> take_all(:code)
+
+    (code_lines |> join_content |> Marked.Html.code(nil)) <> parse(rest)
+  end
+
   def parse(lines = [%{type: :code_guard} | rest]) do
     fence_type = hd(lines).fence_type
     strength = hd(lines).strength

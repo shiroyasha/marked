@@ -10,6 +10,10 @@ defmodule Marked.Line do
 
   def type(line) do
     cond do
+      code?(line) ->
+        :code
+      code_guard?(line) ->
+        :code_guard
       thematic_break?(line) ->
         :thematic_break
       atx_heading?(line) ->
@@ -18,8 +22,6 @@ defmodule Marked.Line do
         :list_item
       blank?(line) ->
         :blank
-      code_guard?(line) ->
-        :code_guard
       true ->
         :simple
     end
@@ -41,6 +43,10 @@ defmodule Marked.Line do
 
   def atx_heading?(line) do
     Regex.match?(~r/^\s{0,3}\#{1,6}(\s+.*)?(\#*)$/, line)
+  end
+
+  def code?(line) do
+    Regex.match?(~r/^\s\s\s\s/, line)
   end
 
   def code_guard?(line) do

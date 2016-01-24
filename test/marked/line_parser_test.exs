@@ -42,4 +42,12 @@ defmodule LineParserTest do
     end
   end
 
+  describe ":code" do
+    it "strips the first 4 spaces from the string" do
+      line = "    def test"
+
+      assert Marked.LineParser.parse(:code, line).content == "def test"
+    end
+  end
+
 end

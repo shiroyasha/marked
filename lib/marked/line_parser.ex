@@ -39,6 +39,12 @@ defmodule Marked.LineParser do
       content: line}
   end
 
+  def parse(:code, line) do
+    content = line |> String.replace(~r/^\s\s\s\s/, "")
+
+    %{type: :code, content: content}
+  end
+
   defp first_match(line, regex) do
     Regex.scan(regex, line, capture: :first) |> List.first |> List.first
   end

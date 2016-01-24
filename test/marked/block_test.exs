@@ -79,4 +79,15 @@ defmodule BlockTest do
 
   end
 
+  describe "code blocks" do
+    it "renders a code block" do
+      lines = [
+        %{type: :code, content: "def test"},
+      ]
+
+      assert Marked.Block.parse(lines) == "<pre><code>def test\n</code></pre>\n"
+    end
+
+  end
+
 end

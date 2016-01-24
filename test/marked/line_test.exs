@@ -14,6 +14,12 @@ defmodule LineTest do
     end
   end
 
+  describe ".code?" do
+    it "matches lines with 4 spaces in the beggining" do
+      assert Marked.Line.code?("    def test")
+    end
+  end
+
   describe ".type?" do
     context "when line has the passed type" do
       it "returns true" do
