@@ -18,17 +18,12 @@ defmodule Marked.Html do
     "<p>#{strip_lines(content)}</p>\n"
   end
 
-  def hr(content) do
-    "<hr />\n"
-  end
+  def hr(content), do: "<hr />\n"
 
-  def code("", nil) do
-    "<pre><code></code></pre>\n"
-  end
-
-  def code(content, nil) do
-    "<pre><code>#{html_escape(content)}\n</code></pre>\n"
-  end
+  def code(""),           do: code("", nil)
+  def code(content),      do: code(content, nil)
+  def code("", nil),      do: "<pre><code></code></pre>\n"
+  def code(content, nil), do: "<pre><code>#{html_escape(content)}\n</code></pre>\n"
 
   def code(content, language) do
     "<pre><code class=\"language-#{language}\">#{html_escape(content)}\n</code></pre>\n"
