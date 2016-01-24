@@ -25,9 +25,11 @@ defmodule Marked.Block do
   end
 
   def parse(lines = [%{type: :code, content: _} | _]) do
-    {code_lines, rest} = lines |> take_all(:code)
+    {code_lines, rest} = lines |> take_all([:code, :blank])
 
-    (code_lines |> join_content |> Marked.Html.code(nil)) <> parse(rest)
+    code_block = code_lines |> join_content |> String.strip(?\n)
+
+    (code_block |> Marked.Html.code) <> parse(rest)
   end
 
   def parse(lines = [%{type: :code_guard} | rest]) do
@@ -60,8 +62,14 @@ defmodule Marked.Block do
     lines |> Enum.map(fn(line) -> line.content end)
   end
 
-  def take_all(lines, line_type) do
+  def take_all(lines, line_type) when is_atom(line_type) do
     lines |> Enum.split_while(&Marked.Line.type?(&1, line_type))
+  end
+
+  def take_all(lines, line_types) when is_list(line_types) do
+    lines |> Enum.split_while fn(line) ->
+      line_types |> Enum.any?(&Marked.Line.type?(line, &1))
+    end
   end
 
 end
